@@ -1,0 +1,15 @@
+/* Unstructured JSON parsing/serialization library.
+ *
+ * Functions in this library are bindings for functions in
+ * the Rust `unstructured` crate.
+ */
+
+extern type Document
+
+extern function unit(): Document
+
+extern function document_from_json_string(json: string): Result<Document, string>
+
+extern function document_to_json_string(doc: Document): Result<string, string>
+
+extern function select(doc: Document, sel: string): Result<Document, string>
