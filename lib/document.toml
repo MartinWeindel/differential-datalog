@@ -1,2 +1,5 @@
 [dependencies.unstructured]
 version = "0.3.1"
+
+[dependencies.serde_yaml]
+version = "0.8"

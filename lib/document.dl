@@ -12,4 +12,36 @@ extern function document_from_json_string(json: string): Result<Document, string
 
 extern function document_to_json_string(doc: Document): Result<string, string>
 
+extern function document_from_yaml_string(json: string): Result<Document, string>
+
+extern function document_to_yaml_string(doc: Document): Result<string, string>
+
 extern function select(doc: Document, sel: string): Result<Document, string>
+
+extern function is_string(doc: Document): bool
+
+extern function is_map(doc: Document): bool
+
+extern function is_seq(doc: Document): bool
+
+extern function is_number(doc: Document): bool
+
+extern function is_s64(doc: Document): bool
+
+extern function is_u64(doc: Document): bool
+
+extern function is_unit(doc: Document): bool
+
+extern function is_bool(doc: Document): bool
+
+extern function as_string(doc: Document): Option<string>
+
+extern function as_map(doc: Document): Option<Map<Document,Document>>
+
+extern function as_seq(doc: Document): Option<Vec<Document>>
+
+extern function as_s64(doc: Document): Option<s64>
+
+extern function as_u64(doc: Document): Option<u64>
+
+extern function as_bool(doc: Document): Option<bool>
