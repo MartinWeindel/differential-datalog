@@ -18,6 +18,10 @@ impl fmt::Debug for document_Document {
     }
 }
 
+pub fn document_document2string(doc: &document_Document) -> String {
+    doc.x.to_string()
+}
+
 impl FromRecord for document_Document {
     fn from_record(val: &Record) -> Result<Self, String> {
         match val {
@@ -42,74 +46,74 @@ impl Mutator<document_Document> for Record {
     }
 }
 
-pub fn document_unit() -> document_Document {
+pub fn document_doc_unit() -> document_Document {
     document_Document {x: Document::Unit}
 }
 
-pub fn document_document_from_json_string(
+pub fn document_doc_from_json_string(
     json: &String,
 ) -> std_Result<document_Document, String> {
     res2std(serde_json::from_str::<Document>(json).map(|d| document_Document {x:d}))
 }
 
-pub fn document_document_to_json_string(doc: &document_Document) -> std_Result<String, String> {
+pub fn document_doc_to_json_string(doc: &document_Document) -> std_Result<String, String> {
     res2std(serde_json::to_string(&doc.x))
 }
 
-pub fn document_document_from_yaml_string(
+pub fn document_doc_from_yaml_string(
     s: &String,
 ) -> std_Result<document_Document, String> {
     res2std(serde_yaml::from_str::<Document>(s).map(|d| document_Document {x:d}))
 }
 
-pub fn document_document_to_yaml_string(doc: &document_Document) -> std_Result<String, String> {
+pub fn document_doc_to_yaml_string(doc: &document_Document) -> std_Result<String, String> {
     res2std(serde_yaml::to_string(&doc.x))
 }
 
-pub fn document_select<'a>(
+pub fn document_doc_select<'a>(
     doc: &'a document_Document,
     sel: &'a String,
 ) -> std_Result<document_Document, String> {
     res2std(doc.x.select(sel).map(|d| document_Document {x:(*d).clone()}))
 }
 
-pub fn document_is_string(doc: &document_Document) -> bool {
+pub fn document_doc_is_string(doc: &document_Document) -> bool {
     doc.x.is_string()
 }
 
-pub fn document_is_map(doc: &document_Document) -> bool {
+pub fn document_doc_is_map(doc: &document_Document) -> bool {
     doc.x.is_map()
 }
 
-pub fn document_is_seq(doc: &document_Document) -> bool {
+pub fn document_doc_is_seq(doc: &document_Document) -> bool {
     doc.x.is_seq()
 }
 
-pub fn document_is_number(doc: &document_Document) -> bool {
+pub fn document_doc_is_number(doc: &document_Document) -> bool {
     doc.x.is_number()
 }
 
-pub fn document_is_s64(doc: &document_Document) -> bool {
+pub fn document_doc_is_s64(doc: &document_Document) -> bool {
     doc.x.is_i64()
 }
 
-pub fn document_is_u64(doc: &document_Document) -> bool {
+pub fn document_doc_is_u64(doc: &document_Document) -> bool {
     doc.x.is_u64()
 }
 
-pub fn document_is_unit(doc: &document_Document) -> bool {
+pub fn document_doc_is_unit(doc: &document_Document) -> bool {
     doc.x.is_unit()
 }
 
-pub fn document_is_bool(doc: &document_Document) -> bool {
+pub fn document_doc_is_bool(doc: &document_Document) -> bool {
     doc.x.is_bool()
 }
 
-pub fn document_as_string(doc : &document_Document) -> std_Option<String> {
+pub fn document_doc_as_string(doc : &document_Document) -> std_Option<String> {
     option2std(doc.x.as_string())
 }
 
-pub fn document_as_map(doc : &document_Document) -> std_Option<std_Map<document_Document,document_Document>> {
+pub fn document_doc_as_map(doc : &document_Document) -> std_Option<std_Map<document_Document,document_Document>> {
     option2std(doc.x.as_map().map(|map| {
         let mut res = std_Map::new();
 
@@ -120,7 +124,7 @@ pub fn document_as_map(doc : &document_Document) -> std_Option<std_Map<document_
     }))
 }
 
-pub fn document_as_seq(doc : &document_Document) -> std_Option<std_Vec<document_Document>> {
+pub fn document_doc_as_seq(doc : &document_Document) -> std_Option<std_Vec<document_Document>> {
     option2std(doc.x.as_seq().map(|seq| {
         let mut res = std_Vec::new();
         res.x.reserve(seq.len());
@@ -132,14 +136,14 @@ pub fn document_as_seq(doc : &document_Document) -> std_Option<std_Vec<document_
     }))
 }
 
-pub fn document_as_s64(doc : &document_Document) -> std_Option<i64> {
+pub fn document_doc_as_s64(doc : &document_Document) -> std_Option<i64> {
     option2std(doc.x.as_i64())
 }
 
-pub fn document_as_u64(doc : &document_Document) -> std_Option<u64> {
+pub fn document_doc_as_u64(doc : &document_Document) -> std_Option<u64> {
     option2std(doc.x.as_u64())
 }
 
-pub fn document_as_bool(doc : &document_Document) -> std_Option<bool> {
+pub fn document_doc_as_bool(doc : &document_Document) -> std_Option<bool> {
     option2std(doc.x.as_bool())
 }
