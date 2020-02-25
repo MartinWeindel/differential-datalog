@@ -859,6 +859,10 @@ pub fn std_map_is_empty<K: Ord, V: Clone>(m: &std_Map<K, V>) -> bool {
     m.x.is_empty()
 }
 
+pub fn std_map_len<K: Ord, V: Clone>(m: &std_Map<K, V>) -> u64 {
+    m.x.len() as u64
+}
+
 pub fn std_map_union<K: Ord + Clone, V: Clone>(
     m1: &std_Map<K, V>,
     m2: &std_Map<K, V>,

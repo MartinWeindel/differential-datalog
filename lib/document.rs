@@ -1,5 +1,7 @@
+use unstructured;
 use unstructured::Document;
 use differential_datalog::record::*;
+use std::collections::BTreeMap;
 
 #[derive(Eq, PartialOrd, PartialEq, Ord, Clone, Hash, Serialize, Deserialize, Default)]
 pub struct document_Document {
@@ -85,7 +87,7 @@ pub fn document_doc_is_map(doc: &document_Document) -> bool {
     doc.x.is_map()
 }
 
-pub fn document_doc_is_seq(doc: &document_Document) -> bool {
+pub fn document_doc_is_vec(doc: &document_Document) -> bool {
     doc.x.is_seq()
 }
 
@@ -124,7 +126,7 @@ pub fn document_doc_as_map(doc : &document_Document) -> std_Option<std_Map<docum
     }))
 }
 
-pub fn document_doc_as_seq(doc : &document_Document) -> std_Option<std_Vec<document_Document>> {
+pub fn document_doc_as_vec(doc : &document_Document) -> std_Option<std_Vec<document_Document>> {
     option2std(doc.x.as_seq().map(|seq| {
         let mut res = std_Vec::new();
         res.x.reserve(seq.len());
@@ -146,4 +148,40 @@ pub fn document_doc_as_u64(doc : &document_Document) -> std_Option<u64> {
 
 pub fn document_doc_as_bool(doc : &document_Document) -> std_Option<bool> {
     option2std(doc.x.as_bool())
+}
+
+pub fn document_doc_from_bool(b: bool) -> document_Document {
+    document_Document {x: Document::from(b)}
+}
+
+pub fn document_doc_from_string(s: String) -> document_Document {
+    document_Document {x: Document::from(s)}
+}
+
+pub fn document_doc_from_u64(u: u64) -> document_Document {
+    document_Document {x: Document::from(u)}
+}
+
+pub fn document_doc_from_s64(s: i64) -> document_Document {
+    document_Document {x: Document::from(s)}
+}
+
+pub fn document_doc_from_vec(seq: &std_Vec<document_Document>) -> document_Document {
+    let mut res = Vec::new();
+    res.reserve(seq.len());
+
+    for value in seq.iter() {
+        res.push(value.x.clone());
+    }
+
+    document_Document {x: Document::from(res)}
+}
+
+pub fn document_doc_from_map(map: &std_Map<String, document_Document>) -> document_Document {
+    let mut res = BTreeMap::new();
+
+    for (key, value) in map.iter() {
+        res.insert(Document::from(key), value.x.clone());
+    }
+    return document_Document {x: Document::from(res)};
 }

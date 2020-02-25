@@ -251,6 +251,7 @@ extern function map_get(m: Map<'K,'V>, k:'K): Option<'V>
 extern function map_contains_key(m: Map<'K,'V>, k: 'K): bool
 extern function map_is_empty(m: Map<'K,'V>): bool
 extern function map_union(m1: Map<'K, 'V>, m2: Map<'K,'V>): Map<'K, 'V>
+extern function map_len(m: Map<'K,'V>): bit<64>
 
 /*
  * Set

@@ -24,7 +24,7 @@ extern function doc_is_string(doc: Document): bool
 
 extern function doc_is_map(doc: Document): bool
 
-extern function doc_is_seq(doc: Document): bool
+extern function doc_is_vec(doc: Document): bool
 
 extern function doc_is_number(doc: Document): bool
 
@@ -40,10 +40,18 @@ extern function doc_as_string(doc: Document): Option<string>
 
 extern function doc_as_map(doc: Document): Option<Map<Document,Document>>
 
-extern function doc_as_seq(doc: Document): Option<Vec<Document>>
+extern function doc_as_vec(doc: Document): Option<Vec<Document>>
 
 extern function doc_as_s64(doc: Document): Option<s64>
 
 extern function doc_as_u64(doc: Document): Option<u64>
 
 extern function doc_as_bool(doc: Document): Option<bool>
+
+extern function doc_from_map(map: Map<string,Document>): Document
+extern function doc_from_vec(vec: Vec<Document>): Document
+extern function doc_from_bool(b: bool): Document
+extern function doc_from_string(s: string): Document
+extern function doc_from_u64(u: u64): Document
+extern function doc_from_s64(s: s64): Document
+
