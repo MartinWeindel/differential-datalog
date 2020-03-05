@@ -3,7 +3,8 @@
 set -e
 
 # The DDlog program to use for tests (relative to the DDlog root)
-TEST_PROG=test/types_test/typesTest.dl
+#TEST_PROG=test/types_test/typesTest.dl
+TEST_PROG=../gardener_op/poc1.dl
 
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -15,7 +16,8 @@ DDLOGFLAGS="--output-input-relations=O --dynlib"
 
 echo "Running DDlog and generating .so for tests"
 
-(cd ${TEST_DIR} && ddlog -i ${TEST_NAME} ${DDLOGFLAGS} -L ${DDLOG_ROOT}/lib -o ${THIS_DIR})
+echo cd ${TEST_DIR}  ddlog -i ${TEST_NAME} -j ${DDLOGFLAGS} -L ${DDLOG_ROOT}/lib -o ${THIS_DIR}
+(cd ${TEST_DIR} && ddlog -i ${TEST_NAME} -j ${DDLOGFLAGS} -L ${DDLOG_ROOT}/lib -o ${THIS_DIR})
 
 (cd ${TEST_BASE}_ddlog && cargo build --release)
 

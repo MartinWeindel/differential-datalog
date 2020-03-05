@@ -141,8 +141,8 @@ flatBufferValidate d = do
     let ?d = d
     mapM_ (\case
             t@TOpaque{..} ->
-                check (elem typeName $ [rEF_TYPE, mAP_TYPE, iNTERNED_TYPE] ++ sET_TYPES) (pos t) $
-                    "Cannot generate FlatBuffer schema for extern type " ++ show t
+                check (elem typeName $ [rEF_TYPE, mAP_TYPE, iNTERNED_TYPE, dOCUMENT_TYPE] ++ sET_TYPES) (pos t) $
+                    "Cannot generate FlatBuffer schema xx for extern type " ++ show t
             _ -> return ())
           progTypesToSerialize
 
@@ -375,6 +375,8 @@ typeTableName x =
                        -> "__Table_Vec_" <> mkTypeIdentifier elemType
          TOpaque{typeArgs = [keyType, valType], ..} | typeName == mAP_TYPE
                        -> typeTableName $ tOpaque "std.Vec" [tTuple [keyType, valType]]
+         TOpaque{..} | typeName == dOCUMENT_TYPE
+                       -> "__Document"
          t             -> error $ "typeTableName: Unexpected type " ++ show t
 
 -- True if type is serialized into a vector inside FlatBuffer.
@@ -569,6 +571,8 @@ fbType x =
                                           else typeTableName elemType) <> "]"
          TOpaque{typeArgs = [keyType,valType],..} | typeName == mAP_TYPE
                             -> "[" <> fbTupleName [keyType, valType] <> "]"
+         TOpaque{..} | typeName == dOCUMENT_TYPE
+                            -> "__Document"
          t'                 -> error $ "FlatBuffer.fbType: unsupported type " ++ show t'
 
 -- Convert type into a valid FlatBuf identifier.
@@ -751,6 +755,8 @@ jConvType rw x =
                            -> "java.util.List<" <> jConvObjType True rw elemType <> ">"
         TOpaque{typeArgs = [keyType,valType],..} | typeName == mAP_TYPE
                            -> "java.util.Map<" <> jConvObjType False rw keyType <> "," <+> jConvObjType False rw valType <> ">"
+        TOpaque{..} | typeName == dOCUMENT_TYPE
+                           -> "String"
         t'                 -> error $ "FlatBuffer.jConvType: unsupported type " ++ show t'
 
 
@@ -851,6 +857,8 @@ jConv2FBType fbctx e t =
                                -> pp builderClass <> ".create_" <> mkTypeIdentifier ot <> (parens $ "fbbuilder," <+> e)
             ot@TOpaque{typeArgs = [_,_], ..} | typeName == mAP_TYPE
                                -> pp builderClass <> ".create_" <> mkTypeIdentifier ot <> (parens $ "fbbuilder," <+> e)
+            TOpaque{..} | typeName == dOCUMENT_TYPE
+                               -> "fbbuilder.createString(" <> e <> ")"
             t'                 -> error $ "FlatBuffer.jConv2FBType: unsupported type " ++ show t'
     bigint = jFBPackage <> ".__BigInt.create__BigInt(fbbuilder,"
          <+> e <> ".signum() < 0 ? false : true,"
@@ -1444,6 +1452,8 @@ jReadField nesting fbctx e t =
                                         (jReadField (nesting+1) (FBField ttable "a0") (e' <> parens _vi) keyType) <> "," <+>
                                         (jReadField (nesting+1) (FBField ttable "a1") (e' <> parens _vi) valType) <> ");") $$
                                      "return" <+> vmap <> ";") <> ")).get()"
+                      TOpaque{..} | typeName == dOCUMENT_TYPE
+                                         -> e'
                       t'                 -> error $ "FlatBuffer.jReadField: unsupported type " ++ show t'
         where
         bigint = "new java.math.BigInteger(" <> e' <> ".sign() ? 1 : -1," <+>

@@ -56,6 +56,7 @@ module Language.DifferentialDatalog.Type(
     iNTERNED_TYPE,
     gROUP_TYPE,
     rEF_TYPE,
+    dOCUMENT_TYPE,
     checkIterable,
     typeIterType
 ) where
@@ -95,6 +96,9 @@ mAP_TYPE = "std.Map"
 
 iNTERNED_TYPE :: String
 iNTERNED_TYPE = "intern.IObj"
+
+dOCUMENT_TYPE :: String
+dOCUMENT_TYPE = "document.Document"
 
 -- | An object with type
 class WithType a where

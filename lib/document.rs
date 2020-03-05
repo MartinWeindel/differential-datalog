@@ -48,6 +48,48 @@ impl Mutator<document_Document> for Record {
     }
 }
 
+
+#[cfg(feature = "flatbuf")]
+impl<FB> FromFlatBuffer<FB> for document_Document
+{
+    fn from_flatbuf(fb: FB) -> Response<Self> {
+        Ok(serde_json::from_str::<Document>(String::from_flatbuf(fb)?))
+    }
+}
+
+#[cfg(feature = "flatbuf")]
+impl<'b> ToFlatBuffer<'b> for document_Document
+{
+    type Target = <String as ToFlatBuffer<'b>>::Target;
+
+    fn to_flatbuf(&self, fbb: &mut fbrt::FlatBufferBuilder<'b>) -> Self::Target {
+        serde_json::to_string(&self.x).unwrap_or_default("{}").to_flatbuf(fbb)
+    }
+}
+
+#[cfg(feature = "flatbuf")]
+impl<'b> ToFlatBufferTable<'b> for document_Document
+{
+    type Target = <String as ToFlatBufferTable<'b>>::Target;
+
+    fn to_flatbuf_table(
+        &self,
+        fbb: &mut fbrt::FlatBufferBuilder<'b>,
+    ) -> fbrt::WIPOffset<Self::Target> {
+        serde_json::to_string(&self.x).unwrap_or_default("{}").to_flatbuf_table(fbb)
+    }
+}
+
+#[cfg(feature = "flatbuf")]
+impl<'b, T> ToFlatBufferVectorElement<'b> for document_Document
+{
+    type Target = <String as ToFlatBufferVectorElement<'b>>::Target;
+
+    fn to_flatbuf_vector_element(&self, fbb: &mut fbrt::FlatBufferBuilder<'b>) -> Self::Target {
+        serde_json::to_string(&self.x).unwrap_or_default("{}").to_flatbuf_vector_element(fbb)
+    }
+}
+
 pub fn document_doc_unit() -> document_Document {
     document_Document {x: Document::Unit}
 }
